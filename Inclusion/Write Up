@@ -1,0 +1,42 @@
+Herkese Merhaba Ben Aporlorxl23,
+Bugun Tryhackmedeki Inclusion Makinesine Göz Atıcaz.
+
+İlk olarak Tryhackmenin sizin için oluşturduğu vpne bağlanmanız gerekiyor.
+Bu konu hakkında bilgi sahibi değilseniz bu adresten nasıl yapılacağını öğrenebilrsiniz
+  > https://tryhackme.com/room/openvpn
+https://tryhackme.com/room/inclusion Sitesine giderek ilk olarak makinemizi deploy ediyoruz yani başlatıyoruz.
+Bu işlem 2 3 Dakika sürebilir bu yüzden vpne bağlanıp makineyi başlattıktan sonra makinenin başlayıp başlamadığını öğremek istiyorsanız
+  > ping <Ip>
+Yazarak makineye ping attığı anda makinenin açıldığını anlayabilrsiniz.
+Şimdi gelelim bilgi toplama işlemine, bunu yapmak için nmap toolunu kullanacağız.
+  > nmap [options] <Ip>
+Burada size bir kaç parametreden bahsedeceğim
+-sC = nmap içerisindeki scriptleri kullanarak sistem hakkında daha fazla bilgi edinmeye çalışır.
+-sV = nmap tarafta bulduğu bilgilerin version bilgilerini gösterir.
+-A = nmap bu parametrede agresif tarama yapar, yani karşı tarafa agresif olarak bir tarama gerçekleştiğinden işlemimiz daha hızlı olur ve aldığımız bilgide aratar.
+-T<0-5> = nmapde parametre sayesinde tarama hızını ayarlayabilrsiniz.
+-oN/oA/oS/oG = nmap bu parametrelerde nmap çıktısını kayıt eder.
+Kullandığımız parametreler : nmap -sCV -A -T4 -oN Nmap 10.10.226.73
+---------------------------------------------------------------------------------------------------
+| # Nmap 7.80 scan initiated Fri May 22 15:50:17 2020 as: nmap -sCV -A -T4 -oN Nmap 10.10.226.73  |
+| Nmap scan report for 10.10.226.73                                                               |
+| Host is up (0.12s latency).                                                                     |
+| Not shown: 998 closed ports                                                                     |
+| PORT   STATE SERVICE VERSION                                                                    |
+| 22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)               |
+| | ssh-hostkey:                                                                                  |
+| |   2048 e6:3a:2e:37:2b:35:fb:47:ca:90:30:d2:14:1c:6c:50 (RSA)                                  |
+| |   256 73:1d:17:93:80:31:4f:8a:d5:71:cb:ba:70:63:38:04 (ECDSA)                                 |
+| |_  256 d3:52:31:e8:78:1b:a6:84:db:9b:23:86:f0:1f:31:2a (ED25519)                               |
+| 80/tcp open  http    Werkzeug httpd 0.16.0 (Python 3.6.9)                                       |
+| |_http-title: My blog                                                                           |
+| Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel                                         |
+|                                                                                                 |
+| Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .  |
+| # Nmap done at Fri May 22 15:50:43 2020 -- 1 IP address (1 host up) scanned in 25.65 seconds    |
+---------------------------------------------------------------------------------------------------
+Burada nmap bize karşı tarafta 22 ve 80 portunun açık olduğunu söyledi.
+Genel Olarak
+22 ssh portu
+80 http portudur
+Bu Durumda ilk olarak karşı web siteye gidebiliriz.
